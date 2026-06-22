@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>战争雷霆 · 卡牌对战</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- ========== 登录/选择界面 ========== -->
+    <div id="lobby-screen" class="screen active">
+        <div class="lobby-container">
+            <h1 class="game-title">⚔ 战争雷霆 · 卡牌对决</h1>
+            <p class="subtitle">选择你的载具，踏上战场！</p>
+
+            <!-- 登录 -->
+            <div class="login-section card-panel">
+                <h3>选择玩家</h3>
+                <div class="player-select-row">
+                    <div class="player-select-group">
+                        <label>玩家 1</label>
+                        <select id="player1-select" class="input-select"></select>
+                        <input type="password" id="password1" class="input-text" placeholder="密码 (test123)" value="test123">
+                    </div>
+                    <div class="player-select-group">
+                        <label>玩家 2</label>
+                        <select id="player2-select" class="input-select"></select>
+                        <input type="password" id="password2" class="input-text" placeholder="密码 (test123)" value="test123">
+                    </div>
+                </div>
+                <button id="login-btn" class="btn btn-primary">登录并开始游戏</button>
+                <p id="login-error" class="error-msg"></p>
+            </div>
+
+            <!-- 载具选择 -->
+            <div class="vehicle-section card-panel">
+                <h3>选择载具</h3>
+                <div class="vehicle-row" id="vehicle-list">
+                    <!-- 动态加载 -->
+                </div>
+            </div>
+
+            <!-- 弹药选择 -->
+            <div class="ammo-select-section card-panel" id="ammo-select-panel" style="display:none;">
+                <h3>选择弹药配置</h3>
+                <div id="ammo-select-list">
+                    <!-- 动态加载滑块 -->
+                </div>
+                <div class="ammo-summary">
+                    <span>总计：<strong id="ammo-total">0</strong> 发</span>
+                    <span id="ammo-range">（范围：<span id="ammo-min"></span> - <span id="ammo-max"></span>）</span>
+                    <span id="ammo-warning" class="error-msg"></span>
+                </div>
+            </div>
+
+            <!-- 创建 / 加入对局 -->
+            <div class="game-start-section card-panel">
+                <h3>选择模式</h3>
+                <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+                    <button id="create-game-btn" class="btn btn-success" disabled>👥 玩家对战</button>
+                    <button id="create-ai-btn" class="btn btn-info" disabled>🤖 挑战 AI</button>
+                </div>
+                <p id="game-info" class="info-msg"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 游戏主界面 ========== -->
+    <div id="game-screen" class="screen">
+        <!-- 顶部：对方信息 -->
+        <div id="opponent-area" class="player-area opponent">
+            <div class="player-info-bar">
+                <div class="player-name" id="opponent-name">对手</div>
+                <div class="vehicle-badge" id="opponent-vehicle">载具</div>
+                <div class="stat-bar">
+                    <span>血量</span>
+                    <div class="hp-bar"><div class="hp-fill" id="opponent-hp-fill"></div></div>
+                    <span id="opponent-hp-text">100/100</span>
+                </div>
+                <div class="stat-bar">
+                    <span>防御</span>
+                    <span id="opponent-defense">15</span>
+                </div>
+                <div class="stat-bar">
+                    <span>决策值</span>
+                    <div class="decision-bar"><div class="decision-fill" id="opponent-decision-fill"></div></div>
+                    <span id="opponent-decision-text">100/100</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中部：对战日志 -->
+        <div id="battle-log" class="battle-log">
+            <div class="log-header">⚡ 战报</div>
+            <div id="log-entries" class="log-entries">
+                <div class="log-entry">等待对战开始...</div>
+            </div>
+        </div>
+
+        <!-- 底部：己方信息与手牌 -->
+        <div id="player-area" class="player-area self">
+            <div class="player-info-bar">
+                <div class="player-name" id="player-name">我</div>
+                <div class="vehicle-badge" id="player-vehicle">载具</div>
+                <div class="stat-bar">
+                    <span>血量</span>
+                    <div class="hp-bar"><div class="hp-fill" id="player-hp-fill"></div></div>
+                    <span id="player-hp-text">100/100</span>
+                </div>
+                <div class="stat-bar">
+                    <span>防御</span>
+                    <span id="player-defense">15</span>
+                </div>
+                <div class="stat-bar">
+                    <span>决策值</span>
+                    <div class="decision-bar"><div class="decision-fill" id="player-decision-fill"></div></div>
+                    <span id="player-decision-text">100/100</span>
+                </div>
+                <div class="turn-indicator" id="turn-indicator"></div>
+            </div>
+
+            <!-- Buff 状态 -->
+            <div id="buff-bar" class="buff-bar"></div>
+
+            <!-- 弹药库存 -->
+            <div id="ammo-area" class="ammo-area">
+                <div class="ammo-label">弹药</div>
+                <div id="ammo-cards" class="ammo-cards">
+                    <!-- 动态渲染 -->
+                </div>
+            </div>
+
+            <!-- 手牌区域 -->
+            <div id="hand-area" class="hand-area">
+                <div class="hand-label">手牌</div>
+                <div id="hand-cards" class="hand-cards">
+                    <!-- 动态渲染 -->
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-bar">
+                <button id="end-turn-btn" class="btn btn-warning" disabled>结束回合</button>
+                <button id="mcp-advice-btn" class="btn btn-info" disabled>🤖 AI 建议</button>
+                <button id="restart-btn" class="btn btn-danger" style="display:none;">重新开始</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== Toast 通知 ========== -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

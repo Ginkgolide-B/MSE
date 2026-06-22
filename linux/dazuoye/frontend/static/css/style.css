@@ -1,0 +1,693 @@
+/* ============================================================
+   战争雷霆主题卡牌对战游戏 - 样式表
+   军事风格主题：暗色调 + 橙色/金色高亮
+   ============================================================ */
+
+/* ---------- 全局变量 ---------- */
+:root {
+    --bg-dark: #0a0e17;
+    --bg-panel: #141b2b;
+    --bg-card: #1a2335;
+    --border-glow: #d4a843;
+    --text-primary: #e8e0c8;
+    --text-secondary: #8a8a7a;
+    --text-accent: #f5d742;
+    --hp-color: #e74c3c;
+    --hp-bg: #3a1a1a;
+    --decision-color: #3498db;
+    --decision-bg: #1a2a3a;
+    --ammo-color: #e67e22;
+    --decision-card-color: #2ecc71;
+    --btn-primary: #d4a843;
+    --btn-success: #2ecc71;
+    --btn-warning: #e67e22;
+    --btn-danger: #e74c3c;
+    --btn-info: #3498db;
+    --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- 全局重置 ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ---------- 屏幕切换 ---------- */
+.screen { display: none; }
+.screen.active { display: flex; }
+
+/* ---------- 大厅界面 ---------- */
+#lobby-screen {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.lobby-container {
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+}
+
+.game-title {
+    font-size: 2.5rem;
+    color: var(--text-accent);
+    text-shadow: 0 0 20px rgba(212, 168, 67, 0.4);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+/* ---------- 面板 ---------- */
+.card-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glow);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.card-panel h3 {
+    color: var(--text-accent);
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+}
+
+/* ---------- 登录区域 ---------- */
+.player-select-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.player-select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
+}
+
+.player-select-group label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.input-select, .input-text {
+    background: var(--bg-card);
+    border: 1px solid #2a3a5a;
+    border-radius: 6px;
+    color: var(--text-primary);
+    padding: 10px 14px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-select:focus, .input-text:focus {
+    border-color: var(--border-glow);
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: var(--btn-primary);
+    color: #000;
+    margin-top: 12px;
+}
+.btn-primary:hover:not(:disabled) {
+    background: #e8c050;
+    box-shadow: 0 0 20px rgba(212, 168, 67, 0.3);
+}
+
+.btn-success { background: var(--btn-success); color: #000; }
+.btn-success:hover:not(:disabled) { background: #3ddc84; }
+
+.btn-warning { background: var(--btn-warning); color: #000; }
+.btn-warning:hover:not(:disabled) { background: #f09030; }
+
+.btn-danger { background: var(--btn-danger); color: #fff; }
+.btn-danger:hover:not(:disabled) { background: #f05050; }
+
+.btn-info { background: var(--btn-info); color: #fff; }
+.btn-info:hover:not(:disabled) { background: #4aa8e8; }
+
+/* ---------- 载具选择 ---------- */
+.vehicle-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.vehicle-card {
+    background: var(--bg-card);
+    border: 2px solid #2a3a5a;
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.vehicle-card:hover {
+    border-color: var(--border-glow);
+    transform: translateY(-2px);
+}
+
+.vehicle-card.selected {
+    border-color: var(--text-accent);
+    box-shadow: 0 0 15px rgba(212, 168, 67, 0.3);
+}
+
+.vehicle-card h4 {
+    color: var(--text-accent);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.vehicle-card .stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 3px 0;
+}
+
+.vehicle-card .stat-row span:last-child {
+    color: var(--text-primary);
+}
+
+/* ---------- 提示信息 ---------- */
+.error-msg { color: var(--hp-color); margin-top: 10px; }
+.info-msg { color: var(--decision-color); margin-top: 10px; }
+
+/* ---------- 游戏主界面 ---------- */
+#game-screen {
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 10px;
+    gap: 10px;
+}
+
+/* ---------- 玩家信息栏 ---------- */
+.player-area {
+    background: var(--bg-panel);
+    border: 1px solid #2a3a5a;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.player-area.opponent {
+    border-color: #5a3a2a;
+}
+
+.player-area.self {
+    border-color: var(--border-glow);
+}
+
+.player-info-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.player-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-accent);
+    min-width: 80px;
+}
+
+.vehicle-badge {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    color: var(--text-accent);
+}
+
+.stat-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.hp-bar, .decision-bar {
+    width: 120px;
+    height: 14px;
+    background: var(--hp-bg);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.decision-bar {
+    background: var(--decision-bg);
+}
+
+.hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #e74c3c, #f39c12);
+    border-radius: 7px;
+    transition: width 0.5s ease;
+}
+
+.decision-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2980b9, #3498db);
+    border-radius: 7px;
+    transition: width 0.5s ease;
+}
+
+.turn-indicator {
+    margin-left: auto;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.turn-indicator.active {
+    background: rgba(46, 204, 113, 0.2);
+    border: 1px solid var(--btn-success);
+    color: var(--btn-success);
+}
+
+.turn-indicator.inactive {
+    background: rgba(100, 100, 100, 0.2);
+    border: 1px solid #555;
+    color: #888;
+}
+
+/* ---------- Buff 状态栏 ---------- */
+.buff-bar {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-height: 30px;
+}
+
+.buff-tag {
+    background: rgba(52, 152, 219, 0.2);
+    border: 1px solid var(--decision-color);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    color: var(--decision-color);
+}
+
+/* ---------- 对战日志 ---------- */
+.battle-log {
+    background: var(--bg-panel);
+    border: 1px solid #2a3a5a;
+    border-radius: 10px;
+    padding: 12px;
+    flex: 1;
+    min-height: 150px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.log-header {
+    font-weight: 700;
+    color: var(--text-accent);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #2a3a5a;
+}
+
+.log-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.log-entry {
+    font-size: 0.85rem;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 4px;
+    color: var(--text-secondary);
+}
+
+.log-entry.self { color: var(--ammo-color); }
+.log-entry.opponent { color: var(--hp-color); }
+
+/* ---------- 手牌区域 ---------- */
+.hand-area {
+    margin-top: 12px;
+}
+
+.hand-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.hand-cards {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 4px;
+}
+
+/* ---------- 卡牌组件 ---------- */
+.game-card {
+    background: var(--bg-card);
+    border: 2px solid #2a3a5a;
+    border-radius: 10px;
+    padding: 14px;
+    min-width: 160px;
+    max-width: 180px;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.game-card:hover:not(.disabled) {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+
+.game-card.ammo {
+    border-color: var(--ammo-color);
+}
+.game-card.ammo:hover:not(.disabled) {
+    border-color: #f0a030;
+    box-shadow: 0 0 20px rgba(230, 126, 34, 0.3);
+}
+
+.game-card.decision {
+    border-color: var(--decision-card-color);
+}
+.game-card.decision:hover:not(.disabled) {
+    border-color: #40e080;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+}
+
+.game-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.game-card .card-type-badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 3px;
+    align-self: flex-start;
+}
+
+.game-card.ammo .card-type-badge {
+    background: rgba(230, 126, 34, 0.3);
+    color: var(--ammo-color);
+}
+
+.game-card.decision .card-type-badge {
+    background: rgba(46, 204, 113, 0.3);
+    color: var(--decision-card-color);
+}
+
+.game-card .card-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.game-card .card-cost {
+    font-size: 0.8rem;
+    color: var(--decision-color);
+}
+
+.game-card .card-attack {
+    font-size: 0.8rem;
+    color: var(--ammo-color);
+}
+
+.game-card .card-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+/* ---------- 操作栏 ---------- */
+.action-bar {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    justify-content: center;
+}
+
+/* ---------- Toast 通知 ---------- */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    padding: 14px 24px;
+    color: var(--text-primary);
+    font-weight: 600;
+    z-index: 1000;
+    transform: translateX(120%);
+    transition: transform 0.4s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+/* ---------- 游戏结束覆盖层 ---------- */
+.game-over-banner {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.game-over-banner h1 {
+    font-size: 3rem;
+    color: var(--text-accent);
+    text-shadow: 0 0 30px rgba(212, 168, 67, 0.5);
+    margin-bottom: 20px;
+}
+
+.game-over-banner p {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+/* ---------- 弹药选择面板 ---------- */
+.ammo-select-section {
+    margin-top: 12px;
+}
+
+.ammo-select-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #1a2a44;
+}
+
+.ammo-select-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 200px;
+}
+
+.ammo-select-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.ammo-select-stat {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.ammo-select-slider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    max-width: 300px;
+}
+
+.ammo-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #2a3a5a;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.ammo-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--ammo-color);
+    border: 2px solid #f0a030;
+    cursor: pointer;
+}
+
+.ammo-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--ammo-color);
+    border: 2px solid #f0a030;
+    cursor: pointer;
+}
+
+.ammo-qty {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ammo-color);
+    min-width: 30px;
+    text-align: right;
+}
+
+.ammo-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+}
+
+.ammo-summary strong {
+    color: var(--ammo-color);
+    font-size: 1.1rem;
+}
+
+/* ---------- 弹药库存区域 ---------- */
+.ammo-area {
+    margin-top: 10px;
+}
+
+.ammo-label {
+    font-size: 0.85rem;
+    color: var(--ammo-color);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.ammo-cards {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0;
+}
+
+.ammo-card {
+    background: var(--bg-card);
+    border: 2px solid var(--ammo-color);
+    border-radius: 8px;
+    padding: 10px 14px;
+    min-width: 130px;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ammo-card:hover:not(.disabled) {
+    transform: translateY(-4px);
+    border-color: #f0a030;
+    box-shadow: 0 4px 16px rgba(230, 126, 34, 0.3);
+}
+
+.ammo-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ammo-card-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.ammo-card-stats {
+    display: flex;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+}
+
+.ammo-card-qty {
+    font-weight: 700;
+    color: var(--ammo-color);
+    font-size: 0.85rem;
+    margin-left: auto;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 768px) {
+    .game-title { font-size: 1.8rem; }
+    .player-info-bar { flex-direction: column; align-items: flex-start; }
+    .hp-bar, .decision-bar { width: 80px; }
+    .game-card { min-width: 140px; }
+    .player-select-row { flex-direction: column; align-items: center; }
+}
